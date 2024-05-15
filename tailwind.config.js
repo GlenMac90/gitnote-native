@@ -29,6 +29,10 @@ module.exports = {
           500: "#42FF77",
           900: "#42FF77/10",
         },
+        gradient: {
+          start: "#43B7FE",
+          end: "#4F48E6",
+        },
       },
       fontFamily: {
         iregular: ["Inter-Regular", "sans-serif"],
