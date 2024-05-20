@@ -37,7 +37,7 @@ const NavBarModalContent = ({
       </TouchableOpacity>
       <SearchInput />
       <Span />
-      <QuickLinks />
+      <QuickLinks setIsOpen={setIsOpen} />
       <Span />
       <NavBarPostsList />
     </View>

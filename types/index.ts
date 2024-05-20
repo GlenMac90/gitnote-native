@@ -10,4 +10,13 @@ export interface NavLinkProps {
     type?: postType;
     path: string;
   };
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+export interface CustomButtonProps {
+  title: string;
+  handlePress: () => void;
+  containerStyles?: string;
+  textStyles?: string;
+  isLoading?: boolean;
 }

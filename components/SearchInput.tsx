@@ -23,7 +23,7 @@ const SearchInput = () => {
   }, [searchValue]);
 
   return (
-    <View className="mt-4 w-full rounded bg-black-700 flex-row space-x-1 p-2.5 items-center focus:border-white-500 border">
+    <View className="mt-4 w-full rounded bg-black-700 flex-row space-x-1 p-2.5 items-center focus:border-white-500 border border-black-700">
       <Image
         source={icons.search}
         resizeMode="contain"

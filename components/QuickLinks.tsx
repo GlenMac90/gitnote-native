@@ -24,14 +24,18 @@ const linkData = [
   },
 ];
 
-const QuickLinks = () => {
+const QuickLinks = ({
+  setIsOpen,
+}: {
+  setIsOpen: (isOpen: boolean) => void;
+}) => {
   return (
     <View className="w-full flex-col">
       <Text className="text-white-500 text-[10px]">QUICK LINKS</Text>
       <FlatList
         data={linkData}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <NavLink link={item} />}
+        renderItem={({ item }) => <NavLink link={item} setIsOpen={setIsOpen} />}
       />
     </View>
   );

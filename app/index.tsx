@@ -1,13 +1,19 @@
-import { Text, View } from "react-native";
-import { Link } from "expo-router";
+import { Redirect } from "expo-router";
+
+import { useGlobalContext } from "@/context/GlobalProvider";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function MainScreen() {
-  return (
-    <View className="h-full w-full items-center justify-center">
-      <Text className="text-4xl font-imedium">Main Screen</Text>
-      <Link href="/home" className="text-lg font-psemibold text-secondary">
-        Home
-      </Link>
-    </View>
-  );
+  const globalContext = useGlobalContext();
+
+  if (!globalContext) {
+    return <LoadingScreen />;
+  }
+  const { isLoading, isLoggedIn } = globalContext;
+
+  if (isLoading) return <LoadingScreen />;
+
+  if (!isLoading && isLoggedIn) return <Redirect href="/home" />;
+
+  return <Redirect href="/sign-in" />;
 }
