@@ -5,6 +5,7 @@ import icons from "@/constants/icons";
 import SearchInput from "./SearchInput";
 import Span from "./Span";
 import QuickLinks from "./QuickLinks";
+import NavBarPostsList from "./NavBarPostsList";
 
 const NavBarModalContent = ({
   setIsOpen,
@@ -37,6 +38,8 @@ const NavBarModalContent = ({
       <SearchInput />
       <Span />
       <QuickLinks />
+      <Span />
+      <NavBarPostsList />
     </View>
   );
 };

@@ -1,21 +1,26 @@
 import { View, Text, FlatList } from "react-native";
+
 import NavLink from "./NavLink";
+import icons from "@/constants/icons";
 
 const linkData = [
   {
     id: 1,
     title: "JSM Course",
     path: "https://docs.gitnote.app",
+    image: icons.jsm,
   },
   {
     id: 2,
     title: "GitHub Organisation",
-    path: "f",
+    path: "https://github.com/GlenMac90",
+    image: icons.github,
   },
   {
     id: 3,
     title: "Logout",
     path: "https://twitter.com/gitnoteapp",
+    image: icons.logout,
   },
 ];
 
