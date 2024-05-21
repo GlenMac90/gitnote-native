@@ -9,6 +9,9 @@ import github from "../assets/icons/github.png";
 import component from "../assets/icons/component.png";
 import workflow from "../assets/icons/workflow.png";
 import knowledge from "../assets/icons/knowledge.png";
+import check from "../assets/icons/check.png";
+import imagePicker from "../assets/icons/imagePicker.png";
+import upload from "../assets/icons/upload.png";
 
 export default {
   logo,
@@ -22,4 +25,7 @@ export default {
   component,
   workflow,
   knowledge,
+  check,
+  imagePicker,
+  upload,
 };

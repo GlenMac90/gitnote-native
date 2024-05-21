@@ -20,3 +20,10 @@ export interface CustomButtonProps {
   textStyles?: string;
   isLoading?: boolean;
 }
+
+export interface ScreenOneProps {
+  avatar: null | any;
+  name: string;
+  portfolio: string;
+  id: string;
+}

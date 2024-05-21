@@ -1,15 +1,10 @@
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
 import LoadingScreen from "@/components/LoadingScreen";
 
 export default function MainScreen() {
-  const globalContext = useGlobalContext();
-
-  if (!globalContext) {
-    return <LoadingScreen />;
-  }
-  const { isLoading, isLoggedIn } = globalContext;
+  const { isLoading, isLoggedIn } = useGlobalContext();
 
   if (isLoading) return <LoadingScreen />;
 

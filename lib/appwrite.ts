@@ -1,3 +1,4 @@
+import { ScreenOneProps } from "@/types";
 import {
   Client,
   ID,
@@ -5,12 +6,14 @@ import {
   Avatars,
   Databases,
   Query,
+  Storage,
 } from "react-native-appwrite";
 
 const client = new Client();
 const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
+const storage = new Storage(client);
 
 const config = {
   endpoint: "https://cloud.appwrite.io/v1",
@@ -101,13 +104,16 @@ export const getCurrentUser = async () => {
 
     if (!currentUser) throw Error;
 
-    const { avatar, name, email, $id } = currentUser.documents[0];
+    const { avatar, name, email, $id, onboarded, onboardedLevel } =
+      currentUser.documents[0];
 
     return {
       avatar,
       name,
       email,
       id: $id,
+      onboarded,
+      onboardedLevel,
     };
   } catch (error) {
     throw new Error();
@@ -121,5 +127,74 @@ export const signOut = async () => {
     return session;
   } catch (error) {
     throw new Error();
+  }
+};
+
+export const getFilePreview = async (fileId: string) => {
+  let fileUrl;
+
+  try {
+    fileUrl = await storage.getFilePreview(
+      storageId,
+      fileId,
+      2000,
+      2000,
+      undefined,
+      100
+    );
+
+    if (!fileUrl) throw Error;
+
+    return fileUrl;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const uploadFile = async ({ file }) => {
+  if (!file) return;
+
+  const { mimeType, ...rest } = file;
+  const asset = { type: mimeType, ...rest };
+
+  try {
+    const uploadedFile = await storage.createFile(
+      storageId,
+      ID.unique(),
+      asset
+    );
+
+    const fileUrl = await getFilePreview(uploadedFile.$id);
+
+    return fileUrl;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const screenOneUpdateUser = async (form: ScreenOneProps) => {
+  try {
+    const avatar = await uploadFile({ file: form.avatar });
+
+    const updatedUser = await databases.updateDocument(
+      databaseId,
+      userCollectionId,
+      form.id,
+      {
+        name: form.name,
+        portfolio: form.portfolio,
+        avatar,
+        onboardedLevel: 1,
+      }
+    );
+
+    if (updatedUser) {
+      return {
+        success: true,
+        updatedUser,
+      };
+    }
+  } catch (error) {
+    console.error(error);
   }
 };

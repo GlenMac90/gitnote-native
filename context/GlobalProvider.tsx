@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { router } from "expo-router";
 
 import { getCurrentUser } from "@/lib/appwrite";
 
@@ -10,7 +17,15 @@ interface GlobalContextProps {
   isLoading: boolean;
 }
 
-const GlobalContext = createContext<GlobalContextProps | null>(null);
+const defaultContext: GlobalContextProps = {
+  isLoggedIn: false,
+  setIsLoggedIn: () => {},
+  user: null,
+  setUser: () => {},
+  isLoading: true,
+};
+
+const GlobalContext = createContext<GlobalContextProps>(defaultContext);
 
 export const useGlobalContext = () => useContext(GlobalContext);
 
@@ -19,9 +34,10 @@ type UserType = {
   email: string;
   name: string;
   id: string;
+  onboarded: boolean;
 };
 
-export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
+export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +47,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const currentUser = await getCurrentUser();
         if (currentUser) {
-          console.log(currentUser);
           setIsLoggedIn(true);
           setUser(currentUser);
         } else {
@@ -46,6 +61,12 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     };
     checkUser();
   }, []);
+
+  useEffect(() => {
+    if (user && user.onboarded === false) {
+      router.replace("/onboarding");
+    }
+  }, [user]);
 
   return (
     <GlobalContext.Provider
