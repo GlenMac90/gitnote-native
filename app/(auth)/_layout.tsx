@@ -1,3 +1,4 @@
+import CustomStatusBar from "@/components/CustomStatusBar";
 import { Stack } from "expo-router";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -8,6 +9,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <Stack.Screen name="sign-up" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
       </Stack>
+      <CustomStatusBar />
     </>
   );
 };

@@ -12,6 +12,10 @@ import knowledge from "../assets/icons/knowledge.png";
 import check from "../assets/icons/check.png";
 import imagePicker from "../assets/icons/imagePicker.png";
 import upload from "../assets/icons/upload.png";
+import greenTick from "../assets/icons/green-tick.png";
+import closeDark from "../assets/icons/close-dark.png";
+import knowledgeIcon from "../assets/icons/knowledge-icon.png";
+import calendar from "../assets/icons/calendar.png";
 
 export default {
   logo,
@@ -28,4 +32,8 @@ export default {
   check,
   imagePicker,
   upload,
+  greenTick,
+  closeDark,
+  knowledgeIcon,
+  calendar,
 };

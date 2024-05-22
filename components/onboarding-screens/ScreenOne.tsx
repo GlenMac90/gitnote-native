@@ -2,28 +2,22 @@ import { useState, useEffect } from "react";
 
 import { View, Text } from "react-native";
 import AvatarPicker from "./AvatarPicker";
-import { ScreenOneProps } from "@/types";
+import { OnboardingScreenProps, ScreenOneProps } from "@/types";
 import FormField from "../FormField";
 import CustomButton from "../CustomButton";
-import { useGlobalContext } from "@/context/GlobalProvider";
 import { screenOneUpdateUser } from "@/lib/appwrite";
 
-const ScreenOne = ({
-  setOnboardedLevel,
-}: {
-  setOnboardedLevel: React.Dispatch<React.SetStateAction<number>>;
-}) => {
-  const { user } = useGlobalContext();
+const ScreenOne = ({ setOnboardedLevel, userId }: OnboardingScreenProps) => {
   const [form, setForm] = useState<ScreenOneProps>({
     avatar: null,
     name: "",
     portfolio: "",
-    id: user?.id,
+    id: userId,
   });
 
   useEffect(() => {
-    setForm((prev) => ({ ...prev, id: user?.id }));
-  }, [user]);
+    setForm((prev) => ({ ...prev, id: userId }));
+  }, [userId]);
 
   const submitForm = async () => {
     try {

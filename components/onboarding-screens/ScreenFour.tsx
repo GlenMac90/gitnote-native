@@ -1,13 +1,76 @@
+import { useState } from "react";
 import { View, Text } from "react-native";
 
-const ScreenFour = ({
-  setOnboardedLevel,
-}: {
-  setOnboardedLevel: React.Dispatch<React.SetStateAction<number>>;
-}) => {
+import CustomButton from "../CustomButton";
+import { OnboardingScreenProps } from "@/types";
+import CheckBox from "../CheckBox";
+import Picker from "../Picker";
+
+const ScreenFour = ({ setOnboardedLevel, userId }: OnboardingScreenProps) => {
+  const [availableToWork, setAvailableToWork] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(
+    new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate() + 1
+    )
+  );
+
+  console.log("START DATE:", startDate);
+  console.log("END DATE:", endDate);
+
+  const submitForm = () => {
+    setOnboardedLevel(4);
+  };
+
   return (
-    <View>
-      <Text>Screen Four</Text>
+    <View className="mt-6 w-full flex-col">
+      <Text className="font-ibold text-2xl text-white-100">
+        Schedule & Availability
+      </Text>
+      <View className="flex-row space-x-2 mt-6 items-center">
+        <CheckBox
+          checked={availableToWork}
+          onPress={() => setAvailableToWork((prev) => !prev)}
+        />
+        <Text className="text-sm text-white-300 font-imedium">
+          Are you available to work?
+        </Text>
+      </View>
+
+      {availableToWork && (
+        <>
+          <Picker
+            containerStyles="mt-7"
+            title="Start Date"
+            date={startDate}
+            setDate={setStartDate}
+            minimumDate={new Date()}
+            maximumDate={endDate}
+          />
+          <Picker
+            containerStyles="mt-7"
+            title="Start Date"
+            date={endDate}
+            setDate={setEndDate}
+            minimumDate={startDate}
+            maximumDate={
+              new Date(
+                new Date().getFullYear() + 1,
+                new Date().getMonth(),
+                new Date().getDate()
+              )
+            }
+          />
+        </>
+      )}
+
+      <CustomButton
+        containerStyles="mt-6"
+        title="Submit"
+        handlePress={submitForm}
+      />
     </View>
   );
 };

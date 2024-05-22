@@ -198,3 +198,41 @@ export const screenOneUpdateUser = async (form: ScreenOneProps) => {
     console.error(error);
   }
 };
+
+interface UserDataType {
+  email?: string;
+  avatar?: string;
+  name?: string;
+  goals?: string[];
+  tags?: string[];
+  knowledge?: string[];
+  onboarded?: boolean;
+  onboardedLevel?: number;
+  portfolio?: string;
+}
+
+export const updateUser = async ({
+  userId,
+  data,
+}: {
+  userId: string;
+  data: UserDataType;
+}) => {
+  try {
+    const updatedUser = await databases.updateDocument(
+      databaseId,
+      userCollectionId,
+      userId,
+      data
+    );
+
+    if (updatedUser) {
+      return {
+        success: true,
+        updatedUser,
+      };
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

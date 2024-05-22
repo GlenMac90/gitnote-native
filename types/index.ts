@@ -27,3 +27,8 @@ export interface ScreenOneProps {
   portfolio: string;
   id: string;
 }
+
+export interface OnboardingScreenProps {
+  setOnboardedLevel: React.Dispatch<React.SetStateAction<number>>;
+  userId: string;
+}
