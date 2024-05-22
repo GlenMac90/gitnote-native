@@ -151,7 +151,7 @@ export const getFilePreview = async (fileId: string) => {
   }
 };
 
-export const uploadFile = async ({ file }) => {
+export const uploadFile = async ({ file }: any) => {
   if (!file) return;
 
   const { mimeType, ...rest } = file;
@@ -200,6 +200,7 @@ export const screenOneUpdateUser = async (form: ScreenOneProps) => {
 };
 
 interface UserDataType {
+  availability?: boolean;
   email?: string;
   avatar?: string;
   name?: string;
@@ -209,6 +210,8 @@ interface UserDataType {
   onboarded?: boolean;
   onboardedLevel?: number;
   portfolio?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export const updateUser = async ({

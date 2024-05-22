@@ -34,6 +34,7 @@ const ScreenThree = ({ setOnboardedLevel, userId }: OnboardingScreenProps) => {
     setKnowledge([...knowledge, goal]);
     setGoal("");
   };
+
   return (
     <View className="mt-6 w-full flex-col">
       <Text className="font-ibold text-2xl text-white-100">

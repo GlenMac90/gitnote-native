@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { View, Text } from "react-native";
+import { router } from "expo-router";
 
 import CustomButton from "../CustomButton";
 import { OnboardingScreenProps } from "@/types";
 import CheckBox from "../CheckBox";
 import Picker from "../Picker";
+import { updateUser } from "@/lib/appwrite";
 
 const ScreenFour = ({ setOnboardedLevel, userId }: OnboardingScreenProps) => {
   const [availableToWork, setAvailableToWork] = useState<boolean>(false);
@@ -17,11 +19,25 @@ const ScreenFour = ({ setOnboardedLevel, userId }: OnboardingScreenProps) => {
     )
   );
 
-  console.log("START DATE:", startDate);
-  console.log("END DATE:", endDate);
-
-  const submitForm = () => {
-    setOnboardedLevel(4);
+  const submitForm = async () => {
+    try {
+      const updatedUser = await updateUser({
+        userId,
+        data: {
+          availability: availableToWork,
+          startDate,
+          endDate,
+          onboardedLevel: 4,
+          onboarded: true,
+        },
+      });
+      if (updatedUser?.success === true) {
+        setOnboardedLevel(4);
+        router.replace("/home");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

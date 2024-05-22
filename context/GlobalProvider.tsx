@@ -65,6 +65,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (user && user.onboarded === false) {
       router.replace("/onboarding");
+    } else if (user && user.onboarded === true) {
+      router.replace("/home");
     }
   }, [user]);
 
