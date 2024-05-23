@@ -32,3 +32,12 @@ export interface OnboardingScreenProps {
   setOnboardedLevel: React.Dispatch<React.SetStateAction<number>>;
   userId: string;
 }
+
+export type CreateFormType = {
+  steps: string[];
+  title: string;
+  type: "component" | "knowledge" | "workflow";
+  tags: string[];
+  description: string;
+  content: string;
+};

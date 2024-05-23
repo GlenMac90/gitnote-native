@@ -16,6 +16,7 @@ import greenTick from "../assets/icons/green-tick.png";
 import closeDark from "../assets/icons/close-dark.png";
 import knowledgeIcon from "../assets/icons/knowledge-icon.png";
 import calendar from "../assets/icons/calendar.png";
+import chevron from "../assets/icons/chevron.png";
 
 export default {
   logo,
@@ -36,4 +37,5 @@ export default {
   closeDark,
   knowledgeIcon,
   calendar,
+  chevron,
 };

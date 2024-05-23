@@ -37,22 +37,22 @@ const Picker = ({
     <>
       <View className={`w-full flex-col space-y-2 ${containerStyles}`}>
         <Text className="text-sm text-white-300 font-imedium">{title}</Text>
-        {!open && (
-          <Pressable
-            onPress={() => {
-              setOpen(true);
-            }}
-          >
-            <View className="w-full px-3 py-3.5 bg-black-700 rounded flex-row space-x-2 items-center">
-              <Image
-                source={icons.calendar}
-                className="h-4 w-4"
-                resizeMode="contain"
-              />
-              <Text className="text-sm text-white-300">{displayText}</Text>
-            </View>
-          </Pressable>
-        )}
+
+        <Pressable
+          onPress={() => {
+            setOpen((prev) => !prev);
+          }}
+        >
+          <View className="w-full px-3 py-3.5 bg-black-700 rounded flex-row space-x-2 items-center">
+            <Image
+              source={icons.calendar}
+              className="h-4 w-4"
+              resizeMode="contain"
+            />
+            <Text className="text-sm text-white-300">{displayText}</Text>
+          </View>
+        </Pressable>
+
         {open && (
           <DateTimePicker
             themeVariant="dark"

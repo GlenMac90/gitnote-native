@@ -14,7 +14,7 @@ const Goal = ({
   const removeGoal = () => {
     setGoals((prev) => prev.filter((goal) => goal !== title));
   };
-  const imageSource = learningGoal ? icons.greenTick : icons.knowledgeIcon;
+
   return (
     <View className="w-full flex-row items-center rounded justify-between px-3 py-3.5 bg-black-700 mb-3.5">
       <View className="flex-row space-x-2 items-center">

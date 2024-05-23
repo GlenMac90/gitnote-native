@@ -11,7 +11,6 @@ const ScreenThree = ({ setOnboardedLevel, userId }: OnboardingScreenProps) => {
   const [knowledge, setKnowledge] = useState<string[]>([]);
   const [goal, setGoal] = useState<string>("");
   const [tagsString, setTagsString] = useState<string>("");
-  const tags = tagsString.split(",").map((tag) => tag.trim());
 
   const submitForm = async () => {
     const tags = tagsString.split(",").map((tag) => tag.trim());
