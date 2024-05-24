@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, ScrollView, View, TouchableOpacity } from "react-native";
-import RenderHtml from "react-native-render-html";
 
 import FormField from "@/components/FormField";
 import Dropdown from "@/components/Dropdown";
@@ -9,6 +8,7 @@ import { createTypesData } from "@/constants";
 import { CreateFormType } from "@/types";
 import Goal from "@/components/onboarding-screens/Goal";
 import RichTextEditor from "@/components/RichTextEditor";
+import HTMLRenderer from "@/components/HTMLRenderer";
 
 const Create = () => {
   const [form, setForm] = useState<CreateFormType>({
@@ -19,7 +19,6 @@ const Create = () => {
     description: "",
     content: "",
   });
-  const [steps, setSteps] = useState<string[]>([]);
   const [step, setStep] = useState<string>("");
 
   const handlePress = () => {
@@ -30,7 +29,7 @@ const Create = () => {
   };
 
   useEffect(() => {
-    setSteps([]);
+    setForm((prev) => ({ ...prev, steps: [] }));
   }, [form.type]);
 
   return (
@@ -119,14 +118,7 @@ const Create = () => {
           </>
         )}
         <RichTextEditor content={form.content} setForm={setForm} />
-        <View className="w-full mt-6">
-          <RenderHtml
-            contentWidth={100}
-            source={{
-              html: `<div style="color: white;">${form.content}</div>`,
-            }}
-          />
-        </View>
+        <HTMLRenderer content={form.content} />
         <Text className="text-white-500 text-sm font-imedium">RESOURCES</Text>
       </ScrollView>
     </SafeAreaView>

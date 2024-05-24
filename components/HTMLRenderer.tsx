@@ -1,3 +1,4 @@
+import { applyCodeStyles } from "@/utils";
 import { View } from "react-native";
 import RenderHtml from "react-native-render-html";
 
@@ -7,7 +8,7 @@ const HTMLRenderer = ({ content }: { content: string }) => {
       <RenderHtml
         contentWidth={100}
         source={{
-          html: `<div style="color: white;">${content}</div>`,
+          html: applyCodeStyles(`<div style="color: white;">${content}</div>`),
         }}
       />
     </View>
