@@ -308,6 +308,7 @@ const getResourcesForPost = async (postId: string) => {
 };
 
 export const getUsersPosts = async (userId: string): Promise<PostType[]> => {
+  if (!userId) return [];
   try {
     const posts = await databases.listDocuments(databaseId, postCollectionId, [
       Query.equal("creator", userId),
