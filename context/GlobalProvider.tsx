@@ -7,35 +7,12 @@ import {
 } from "react";
 import { router } from "expo-router";
 
-import { getCurrentUser } from "@/lib/appwrite";
-
-interface GlobalContextProps {
-  isLoggedIn: boolean;
-  setIsLoggedIn: (value: boolean) => void;
-  user: any;
-  setUser: (value: any) => void;
-  isLoading: boolean;
-}
-
-const defaultContext: GlobalContextProps = {
-  isLoggedIn: false,
-  setIsLoggedIn: () => {},
-  user: null,
-  setUser: () => {},
-  isLoading: true,
-};
+import { getCurrentUser, getUsersPosts } from "@/lib/appwrite";
+import { GlobalContextProps, UserType, defaultContext } from "@/types";
 
 const GlobalContext = createContext<GlobalContextProps>(defaultContext);
 
 export const useGlobalContext = () => useContext(GlobalContext);
-
-type UserType = {
-  avatar: string;
-  email: string;
-  name: string;
-  id: string;
-  onboarded: boolean;
-};
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

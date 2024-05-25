@@ -1,6 +1,7 @@
-import { applyCodeStyles } from "@/utils";
-import { View } from "react-native";
 import RenderHtml from "react-native-render-html";
+import { View } from "react-native";
+
+import { applyCodeStyles } from "@/utils";
 
 const HTMLRenderer = ({ content }: { content: string }) => {
   return (

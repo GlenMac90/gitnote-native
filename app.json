@@ -13,6 +13,7 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
+      "bundleIdentifier": "com.glenmccallum.gitnote",
       "supportsTablet": true,
       "package": "com.glenmccallum.gitnote"
     },

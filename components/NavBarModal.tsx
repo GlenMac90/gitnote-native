@@ -1,13 +1,27 @@
 import { useState } from "react";
-import { View, Text, Image, Pressable, Modal } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 import icons from "@/constants/icons";
-import pics from "@/constants/pics";
 import NavBarModalContent from "./NavBarModalContent";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const NavBarModal = () => {
+  const { user } = useGlobalContext();
   const [isOpen, setIsOpen] = useState(false);
+
+  const handlePress = () => {
+    setIsOpen(false);
+    router.push(`/profile/${user?.id}`);
+  };
 
   return (
     <>
@@ -32,12 +46,19 @@ const NavBarModal = () => {
             <Pressable className="bg-black-800 h-full w-3/4 right-0 flex-col px-5 py-8 mt-3">
               <View className="flex-col w-full">
                 <View className="w-full flex-row justify-between">
-                  <View className="gap-1.5 flex-row">
+                  <TouchableOpacity
+                    className="gap-1.5 flex-row"
+                    activeOpacity={0.8}
+                    onPress={handlePress}
+                  >
                     <Image
-                      source={pics.dummyImage}
+                      source={{
+                        uri: user?.avatar,
+                      }}
                       resizeMode="cover"
                       className="w-9 h-9"
                     />
+
                     <View className="flex-col">
                       <Text className="text-white-100 font-imedium text-sm">
                         Glen McCallum
@@ -46,7 +67,7 @@ const NavBarModal = () => {
                         glen.mccallum@live.co.uk
                       </Text>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                   <Pressable onPress={() => setIsOpen(!isOpen)}>
                     <Image
                       source={icons.close}

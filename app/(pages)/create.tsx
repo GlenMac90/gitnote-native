@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, ScrollView, View, TouchableOpacity } from "react-native";
+import { router } from "expo-router";
 
 import FormField from "@/components/FormField";
 import Dropdown from "@/components/Dropdown";
 import { createTypesData } from "@/constants";
-import { CreateFormType } from "@/types";
+import { CreateFormType, ResourceType } from "@/types";
 import Goal from "@/components/onboarding-screens/Goal";
 import RichTextEditor from "@/components/RichTextEditor";
-import HTMLRenderer from "@/components/HTMLRenderer";
+import CustomButton from "@/components/CustomButton";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { createPost } from "@/lib/appwrite";
 
 const Create = () => {
+  const { user } = useGlobalContext();
   const [form, setForm] = useState<CreateFormType>({
     steps: [],
     title: "",
@@ -18,14 +22,41 @@ const Create = () => {
     tags: [],
     description: "",
     content: "",
+    resources: [],
   });
   const [step, setStep] = useState<string>("");
+  const [resource, setResource] = useState<ResourceType>({
+    label: "",
+    link: "",
+  });
 
-  const handlePress = () => {
+  const handleSubmit = async () => {
+    if (!user) return;
+    try {
+      const newPost = await createPost({ form, userId: user.id });
+
+      if (newPost) {
+        router.replace("/home");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAddStep = () => {
     if (!step) return;
     if (form.steps.includes(step)) return;
     setForm((prev) => ({ ...prev, steps: [...prev.steps, step] }));
     setStep("");
+  };
+
+  const handleAddResource = () => {
+    if (!resource.label || !resource.link) return;
+    setForm((prev) => ({
+      ...prev,
+      resources: [...prev.resources, resource],
+    }));
+    setResource({ label: "", link: "" });
   };
 
   useEffect(() => {
@@ -109,7 +140,7 @@ const Create = () => {
             <TouchableOpacity
               className={`w-full rounded-[5px] bg-black-600 justify-center items-center py-2.5 ${form.steps.length > 0 ? "mt-0" : "mt-3.5"}`}
               activeOpacity={0.8}
-              onPress={handlePress}
+              onPress={handleAddStep}
             >
               <Text className="text-xs text-white-100 font-imedium">
                 Add Checkmark
@@ -118,8 +149,51 @@ const Create = () => {
           </>
         )}
         <RichTextEditor content={form.content} setForm={setForm} />
-        <HTMLRenderer content={form.content} />
-        <Text className="text-white-500 text-sm font-imedium">RESOURCES</Text>
+        <Text className="text-white-500 text-sm font-imedium mt-6">
+          RESOURCES & LINKS
+        </Text>
+        <FormField
+          otherStyles="mt-6"
+          value={resource.label}
+          placeholder="Label"
+          handleChangeText={(text) =>
+            setResource((prev) => ({ ...prev, label: text }))
+          }
+        />
+        <FormField
+          otherStyles="mt-1"
+          value={resource.link}
+          placeholder="Resource Link"
+          handleChangeText={(text) =>
+            setResource((prev) => ({ ...prev, link: text }))
+          }
+        />
+        <TouchableOpacity
+          className="w-full rounded-[5px] bg-black-600 justify-center items-center py-2.5 mt-3"
+          activeOpacity={0.8}
+          onPress={handleAddResource}
+        >
+          <Text className="text-xs text-white-100 font-imedium">
+            New Resource
+          </Text>
+        </TouchableOpacity>
+        <View className={`${form.resources.length > 0 ? "mt-3.5" : "mt-0"}`}>
+          {form.resources.map((resource: ResourceType) => (
+            <Goal
+              key={resource.label}
+              title={resource.label}
+              setGoals={() => {
+                setForm((prev) => ({
+                  ...prev,
+                  resources: prev.resources.filter(
+                    (step) => step.label !== resource.label
+                  ),
+                }));
+              }}
+            />
+          ))}
+        </View>
+        <CustomButton title="Create" handlePress={handleSubmit} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,4 +1,9 @@
-import { ScreenOneProps } from "@/types";
+import {
+  CreateFormType,
+  PostType,
+  ScreenOneProps,
+  UserDataType,
+} from "@/types";
 import {
   Client,
   ID,
@@ -22,6 +27,7 @@ const config = {
   databaseId: "664b34ac000044021877",
   userCollectionId: "664b351c000fb0dc9402",
   postCollectionId: "664b3552000ae0389db5",
+  resourceCollectionId: "6651bc1b001a53301027",
   storageId: "664b38f10008503ab6f8",
 };
 
@@ -32,6 +38,7 @@ const {
   databaseId,
   userCollectionId,
   postCollectionId,
+  resourceCollectionId,
   storageId,
 } = config;
 
@@ -69,6 +76,46 @@ export const createClient = async ({
     );
 
     return newUser;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const createPost = async ({
+  form,
+  userId,
+}: {
+  form: CreateFormType;
+  userId: string;
+}) => {
+  try {
+    const { resources, ...rest } = form;
+    const newPost = await databases.createDocument(
+      databaseId,
+      postCollectionId,
+      ID.unique(),
+      {
+        ...rest,
+        creator: userId,
+      }
+    );
+
+    const newResources = await Promise.all(
+      resources.map(async (resource) => {
+        const newResource = await databases.createDocument(
+          databaseId,
+          resourceCollectionId,
+          ID.unique(),
+          {
+            ...resource,
+            posts: newPost.$id,
+          }
+        );
+
+        return newResource;
+      })
+    );
+
+    return { newPost, newResources };
   } catch (error) {
     console.error(error);
   }
@@ -199,21 +246,6 @@ export const screenOneUpdateUser = async (form: ScreenOneProps) => {
   }
 };
 
-interface UserDataType {
-  availability?: boolean;
-  email?: string;
-  avatar?: string;
-  name?: string;
-  goals?: string[];
-  tags?: string[];
-  knowledge?: string[];
-  onboarded?: boolean;
-  onboardedLevel?: number;
-  portfolio?: string;
-  startDate?: Date;
-  endDate?: Date;
-}
-
 export const updateUser = async ({
   userId,
   data,
@@ -237,5 +269,81 @@ export const updateUser = async ({
     }
   } catch (error) {
     console.error(error);
+  }
+};
+
+const leanPostData = (post: any) => {
+  return {
+    id: post.$id,
+    createdAt: post.$createdAt,
+    content: post.content,
+    description: post.description,
+    steps: post.steps,
+    tags: post.tags,
+    title: post.title,
+    type: post.type,
+    resources: post.resources,
+  };
+};
+
+const getResourcesForPost = async (postId: string) => {
+  try {
+    const resources = await databases.listDocuments(
+      databaseId,
+      resourceCollectionId,
+      [Query.equal("posts", postId)]
+    );
+
+    return resources.documents.map((resource: any) => {
+      return {
+        id: resource.$id,
+        label: resource.label,
+        link: resource.link,
+      };
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+};
+
+export const getUsersPosts = async (userId: string): Promise<PostType[]> => {
+  try {
+    const posts = await databases.listDocuments(databaseId, postCollectionId, [
+      Query.equal("creator", userId),
+    ]);
+
+    const postsWithResources = await Promise.all(
+      posts.documents.map(async (post) => {
+        const resources = await getResourcesForPost(post.$id);
+
+        return leanPostData({ ...post, resources });
+      })
+    );
+    return postsWithResources;
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+};
+
+export const getRecentPosts = async (): Promise<PostType[]> => {
+  try {
+    const posts = await databases.listDocuments(databaseId, postCollectionId, [
+      Query.orderDesc("$createdAt"),
+      Query.limit(5),
+    ]);
+
+    const postsWithResources = await Promise.all(
+      posts.documents.map(async (post) => {
+        const resources = await getResourcesForPost(post.$id);
+
+        return leanPostData({ ...post, resources });
+      })
+    );
+    return postsWithResources;
+  } catch (error) {
+    console.error(error);
+    throw new Error();
   }
 };
