@@ -1,14 +1,5 @@
+import { FormFieldProps } from "@/types";
 import { View, Text, TextInput } from "react-native";
-
-interface FormFieldProps {
-  textarea?: boolean;
-  title?: string;
-  value: string;
-  placeholder: string;
-  handleChangeText: (text: string) => void;
-  otherStyles?: string;
-  keyboardType?: any;
-}
 
 const FormField = ({
   textarea,

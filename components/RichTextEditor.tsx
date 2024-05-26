@@ -1,19 +1,14 @@
-import { CreateFormType } from "@/types";
 import React, { useRef } from "react";
 import { View } from "react-native";
+
+import { RichTextEditorProps } from "@/types";
 import {
   actions,
   RichEditor,
   RichToolbar,
 } from "react-native-pell-rich-editor";
 
-const RichTextEditor = ({
-  content,
-  setForm,
-}: {
-  content: string;
-  setForm: React.Dispatch<React.SetStateAction<CreateFormType>>;
-}) => {
+const RichTextEditor = ({ content, setForm }: RichTextEditorProps) => {
   const richTextRef = useRef<RichEditor>(null);
   return (
     <>

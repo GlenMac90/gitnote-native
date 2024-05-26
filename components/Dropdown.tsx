@@ -1,14 +1,8 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ImageSourcePropType,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
 import icons from "@/constants/icons";
-import { CreateFormType } from "@/types";
+import { CreateFormType, DropdownProps } from "@/types";
 
 const colorStyles: {
   component: string;
@@ -20,22 +14,7 @@ const colorStyles: {
   workflow: "text-primary-500",
 };
 
-type DropdownDataType = {
-  title: string;
-  icon: ImageSourcePropType;
-};
-
-const Dropdown = ({
-  title,
-  data,
-  containerStyles,
-  setForm,
-}: {
-  title: string;
-  data: DropdownDataType[];
-  containerStyles?: string;
-  setForm: React.Dispatch<React.SetStateAction<CreateFormType>>;
-}) => {
+const Dropdown = ({ title, data, containerStyles, setForm }: DropdownProps) => {
   const [selectedData, setSelectedData] = useState(data[0]);
   const [open, setOpen] = useState(false);
 

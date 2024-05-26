@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
-import {
-  ScreenOne,
-  ScreenTwo,
-  ScreenThree,
-  ScreenFour,
-} from "./onboarding-screens";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import ProcessDiagram from "./onboarding-screens/ProcessDiagram";
+import ScreenFour from "./onboarding-screens/ScreenFour";
+import ScreenOne from "./onboarding-screens/ScreenOne";
+import ScreenThree from "./onboarding-screens/ScreenThree";
+import ScreenTwo from "./onboarding-screens/ScreenTwo";
 
 const OnboardingSequence = () => {
   const { user } = useGlobalContext();
+
+  if (!user) return null;
+
   const [onboardedLevel, setOnboardedLevel] = useState(user.onboardedLevel);
 
   return (

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { PostType } from "../types";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 type AppwriteFunction =
   | (() => Promise<PostType[]>)
@@ -12,6 +13,7 @@ const useAppwrite = ({
   fn: AppwriteFunction;
   userId?: string;
 }) => {
+  const { setPosts } = useGlobalContext();
   const [data, setData] = useState<PostType[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +27,7 @@ const useAppwrite = ({
         );
       } else {
         response = await (fn as () => Promise<PostType[]>)();
+        setPosts(response);
       }
       setData(response);
     } catch (error) {

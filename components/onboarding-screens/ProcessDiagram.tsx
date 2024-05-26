@@ -1,6 +1,5 @@
 import { View } from "react-native";
 
-import { useGlobalContext } from "@/context/GlobalProvider";
 import CompletedStage from "./CompletedStage";
 import CurrentStage from "./CurrentStage";
 import NextStage from "./NextStage";

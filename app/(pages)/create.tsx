@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 
-import FormField from "@/components/FormField";
-import Dropdown from "@/components/Dropdown";
 import { createTypesData } from "@/constants";
 import { CreateFormType, ResourceType } from "@/types";
-import Goal from "@/components/onboarding-screens/Goal";
-import RichTextEditor from "@/components/RichTextEditor";
-import CustomButton from "@/components/CustomButton";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { createPost } from "@/lib/appwrite";
+import CustomButton from "@/components/CustomButton";
+import Dropdown from "@/components/Dropdown";
+import FormField from "@/components/FormField";
 import PageWrapper from "@/components/PageWrapper";
+import RichTextEditor from "@/components/RichTextEditor";
+import Goal from "@/components/onboarding-screens/Goal";
 
 const Create = () => {
   const { user } = useGlobalContext();
@@ -190,7 +190,11 @@ const Create = () => {
           />
         ))}
       </View>
-      <CustomButton title="Create" handlePress={handleSubmit} />
+      <CustomButton
+        title="Create"
+        handlePress={handleSubmit}
+        containerStyles="mt-6"
+      />
     </PageWrapper>
   );
 };

@@ -1,5 +1,5 @@
 import { Image, Text, TouchableOpacity } from "react-native";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { NavLinkProps } from "@/types";
 import { signOut } from "@/lib/appwrite";
 

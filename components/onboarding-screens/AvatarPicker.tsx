@@ -2,15 +2,9 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 
 import icons from "@/constants/icons";
-import { ScreenOneProps } from "@/types";
+import { AvatarPickerProps } from "@/types";
 
-const AvatarPicker = ({
-  form,
-  setForm,
-}: {
-  form: ScreenOneProps;
-  setForm: React.Dispatch<React.SetStateAction<ScreenOneProps>>;
-}) => {
+const AvatarPicker = ({ form, setForm }: AvatarPickerProps) => {
   const openPicker = async () => {
     const result = await DocumentPicker.getDocumentAsync({
       type: ["image/png", "image/jpg", "image/jpeg"],

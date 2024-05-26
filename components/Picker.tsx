@@ -3,6 +3,7 @@ import { View, Text, Image, Pressable } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import icons from "@/constants/icons";
+import { PickerProps } from "@/types";
 
 const Picker = ({
   title,
@@ -11,14 +12,7 @@ const Picker = ({
   minimumDate,
   maximumDate,
   containerStyles,
-}: {
-  title: string;
-  date: Date;
-  setDate: (date: Date) => void;
-  minimumDate: Date;
-  maximumDate: Date;
-  containerStyles?: any;
-}) => {
+}: PickerProps) => {
   const [open, setOpen] = useState(false);
 
   const handleChange = (event: any, selectedDate: Date | undefined) => {

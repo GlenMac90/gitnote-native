@@ -2,10 +2,10 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { router } from "expo-router";
 
 import icons from "@/constants/icons";
+import NavBarPostsList from "./NavBarPostsList";
+import QuickLinks from "./QuickLinks";
 import SearchInput from "./SearchInput";
 import Span from "./Span";
-import QuickLinks from "./QuickLinks";
-import NavBarPostsList from "./NavBarPostsList";
 
 const NavBarModalContent = ({
   setIsOpen,
@@ -39,7 +39,7 @@ const NavBarModalContent = ({
       <Span />
       <QuickLinks setIsOpen={setIsOpen} />
       <Span />
-      <NavBarPostsList />
+      <NavBarPostsList setIsOpen={setIsOpen} />
     </View>
   );
 };

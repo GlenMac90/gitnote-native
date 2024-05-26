@@ -1,9 +1,6 @@
-import { Text, View, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import icons from "@/constants/icons";
-import NavBarModal from "./NavBarModal";
 import Logo from "./Logo";
+import NavBarModal from "./NavBarModal";
 
 const NavBar = () => {
   return (

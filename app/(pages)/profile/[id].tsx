@@ -15,7 +15,6 @@ const User = () => {
     fn: () => getUsersPosts(user!.id),
   });
 
-  console.log("PROFILE POSTS:", posts);
   if (loading) return <LoadingScreen />;
 
   return (

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { Link, router } from "expo-router";
 
-import Logo from "@/components/Logo";
-import FormField from "@/components/FormField";
-import CustomButton from "@/components/CustomButton";
 import { createClient } from "@/lib/appwrite";
+import CustomButton from "@/components/CustomButton";
+import FormField from "@/components/FormField";
+import Logo from "@/components/Logo";
 
 const SignUp = () => {
   const [form, setForm] = useState({

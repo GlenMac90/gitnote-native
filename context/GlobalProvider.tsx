@@ -7,8 +7,13 @@ import {
 } from "react";
 import { router } from "expo-router";
 
-import { getCurrentUser, getUsersPosts } from "@/lib/appwrite";
-import { GlobalContextProps, UserType, defaultContext } from "@/types";
+import { getCurrentUser } from "@/lib/appwrite";
+import {
+  GlobalContextProps,
+  PostType,
+  UserType,
+  defaultContext,
+} from "@/types";
 
 const GlobalContext = createContext<GlobalContextProps>(defaultContext);
 
@@ -18,6 +23,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState<PostType[]>([]);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -55,6 +61,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         user,
         setUser,
         isLoading,
+        posts,
+        setPosts,
       }}
     >
       {children}

@@ -1,14 +1,9 @@
 import { View, Image, Pressable } from "react-native";
 
 import icons from "@/constants/icons";
+import { CheckBoxProps } from "@/types";
 
-const CheckBox = ({
-  checked,
-  onPress,
-}: {
-  checked: boolean;
-  onPress: () => void;
-}) => {
+const CheckBox = ({ checked, onPress }: CheckBoxProps) => {
   return (
     <Pressable onPress={onPress}>
       {checked ? (

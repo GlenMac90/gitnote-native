@@ -348,3 +348,20 @@ export const getRecentPosts = async (): Promise<PostType[]> => {
     throw new Error();
   }
 };
+
+export const getPostById = async (postId: string): Promise<PostType> => {
+  try {
+    const post = await databases.getDocument(
+      databaseId,
+      postCollectionId,
+      postId
+    );
+
+    const resources = await getResourcesForPost(postId);
+
+    return leanPostData({ ...post, resources });
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+};

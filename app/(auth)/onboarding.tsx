@@ -1,6 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
-
 import Logo from "@/components/Logo";
 import OnboardingSequence from "@/components/OnboardingSequence";
 

@@ -1,42 +1,22 @@
 import { View, Text, FlatList } from "react-native";
 
-import { postType } from "@/types";
 import NavPost from "./NavPost";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
-const postsData: Array<{
-  id: number;
-  title: string;
-  path: string;
-  type: postType;
-}> = [
-  {
-    id: 1,
-    title: "Component Post",
-    path: "https://docs.gitnote.app",
-    type: "component",
-  },
-  {
-    id: 2,
-    title: "Workflow Post",
-    path: "https://github.com/GlenMac90",
-    type: "workflow",
-  },
-  {
-    id: 3,
-    title: "Knowledge Post",
-    path: "https://twitter.com/gitnoteapp",
-    type: "knowledge",
-  },
-];
-
-const NavBarPostsList = () => {
+const NavBarPostsList = ({
+  setIsOpen,
+}: {
+  setIsOpen: (isOpen: boolean) => void;
+}) => {
+  const { posts } = useGlobalContext();
+  console.log("POSTS", posts[0]);
   return (
     <View className="w-full flex-col">
       <Text className="text-white-500 text-[10px]">POSTS</Text>
       <FlatList
-        data={postsData}
+        data={posts}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <NavPost link={item} />}
+        renderItem={({ item }) => <NavPost link={item} setIsOpen={setIsOpen} />}
       />
     </View>
   );

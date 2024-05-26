@@ -3,13 +3,7 @@ import { ImageSourcePropType } from "react-native";
 export type postType = "workflow" | "knowledge" | "component";
 
 export interface NavLinkProps {
-  link: {
-    id: number;
-    title: string;
-    image?: ImageSourcePropType | undefined;
-    type?: postType;
-    path: string;
-  };
+  link: PostType;
   setIsOpen: (isOpen: boolean) => void;
 }
 
@@ -41,7 +35,7 @@ export type ResourceType = {
 export type CreateFormType = {
   steps: string[];
   title: string;
-  type: "component" | "knowledge" | "workflow";
+  type: postType;
   tags: string[];
   description: string;
   content: string;
@@ -75,7 +69,7 @@ export type PostType = {
   steps?: string[];
   tags?: string[];
   title: string;
-  type: string;
+  type: postType;
   resources: ResourceTypeExtended[];
 };
 
@@ -85,6 +79,7 @@ export type UserType = {
   name: string;
   id: string;
   onboarded: boolean;
+  onboardedLevel: number;
 };
 
 export interface GlobalContextProps {
@@ -93,6 +88,8 @@ export interface GlobalContextProps {
   user: UserType | null;
   setUser: (value: any) => void;
   isLoading: boolean;
+  posts: PostType[];
+  setPosts: (value: PostType[]) => void;
 }
 
 export const defaultContext: GlobalContextProps = {
@@ -101,4 +98,58 @@ export const defaultContext: GlobalContextProps = {
   user: null,
   setUser: () => {},
   isLoading: true,
+  posts: [],
+  setPosts: () => {},
 };
+
+export interface CheckBoxProps {
+  checked: boolean;
+  onPress: () => void;
+}
+
+type DropdownDataType = {
+  title: string;
+  icon: ImageSourcePropType;
+};
+
+export interface DropdownProps {
+  title: string;
+  data: DropdownDataType[];
+  containerStyles?: string;
+  setForm: React.Dispatch<React.SetStateAction<CreateFormType>>;
+}
+
+export interface FormFieldProps {
+  textarea?: boolean;
+  title?: string;
+  value: string;
+  placeholder: string;
+  handleChangeText: (text: string) => void;
+  otherStyles?: string;
+  keyboardType?: any;
+}
+
+export interface AvatarPickerProps {
+  form: ScreenOneProps;
+  setForm: React.Dispatch<React.SetStateAction<ScreenOneProps>>;
+}
+
+export interface GoalProps {
+  learningGoal?: boolean;
+  title: string;
+  setGoals: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export interface PickerProps {
+  title: string;
+  date: Date;
+  setDate: (date: Date) => void;
+  minimumDate: Date;
+  maximumDate: Date;
+  containerStyles?: any;
+}
+
+export interface RichTextEditorProps {
+  content: string;
+  setForm: React.Dispatch<React.SetStateAction<CreateFormType>>;
+}

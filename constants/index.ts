@@ -1,6 +1,10 @@
+import { ImageSourcePropType } from "react-native";
 import icons from "./icons";
 
-export const createTypesData = [
+export const createTypesData: {
+  title: "Component" | "Knowledge" | "Workflow";
+  icon: ImageSourcePropType;
+}[] = [
   {
     title: "Component",
     icon: icons.component,

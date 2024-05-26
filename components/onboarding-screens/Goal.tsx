@@ -1,16 +1,9 @@
 import { View, Text, Image, Pressable } from "react-native";
 
 import icons from "@/constants/icons";
+import { GoalProps } from "@/types";
 
-const Goal = ({
-  learningGoal = false,
-  title,
-  setGoals,
-}: {
-  learningGoal?: boolean;
-  title: string;
-  setGoals: React.Dispatch<React.SetStateAction<string[]>>;
-}) => {
+const Goal = ({ learningGoal = false, title, setGoals }: GoalProps) => {
   const removeGoal = () => {
     setGoals((prev) => prev.filter((goal) => goal !== title));
   };

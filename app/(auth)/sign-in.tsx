@@ -3,10 +3,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, View } from "react-native";
 import { Link, router } from "expo-router";
 
-import Logo from "@/components/Logo";
-import FormField from "@/components/FormField";
-import CustomButton from "@/components/CustomButton";
 import { signIn } from "@/lib/appwrite";
+import CustomButton from "@/components/CustomButton";
+import FormField from "@/components/FormField";
+import Logo from "@/components/Logo";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -20,7 +20,9 @@ const SignIn = () => {
       if (user) {
         router.push("/home");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
