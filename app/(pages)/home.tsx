@@ -1,26 +1,28 @@
-import { Text, View, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View } from "react-native";
 
-import HTMLRenderer from "@/components/HTMLRenderer";
+import PageWrapper from "@/components/PageWrapper";
 import { getRecentPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
+import LoadingScreen from "@/components/LoadingScreen";
+import PostCard from "@/components/PostCard";
 
 export default function HomeScreen() {
   const { data: posts, loading } = useAppwrite({ fn: getRecentPosts });
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return <LoadingScreen />;
+
+  console.log("POSTS:", posts);
   return (
-    <SafeAreaView className="h-full w-full">
-      <ScrollView className="w-full flex-col">
-        <Text className="text-4xl font-imedium">Home Screen</Text>
-        {posts.length > 0 && (
-          <View className="flex-col space-y-4">
-            {posts.map((post) => (
-              <HTMLRenderer key={post.id} content={post.content} />
-            ))}
-          </View>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+    <PageWrapper>
+      <Text className="text-4xl font-imedium">Home Screen</Text>
+
+      {posts.length > 0 && (
+        <View className="flex-col w-full">
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </View>
+      )}
+    </PageWrapper>
   );
 }
