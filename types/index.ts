@@ -28,6 +28,7 @@ export interface OnboardingScreenProps {
 }
 
 export type ResourceType = {
+  id?: string;
   label: string;
   link: string;
 };
@@ -63,6 +64,7 @@ type ResourceTypeExtended = ResourceType & {
 
 export type PostType = {
   id: string;
+  creatorId: string;
   createdAt: number;
   content: string;
   description: string;

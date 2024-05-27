@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 
-import { PostType } from "@/types";
+import { PostType, ResourceType } from "@/types";
 import { getPostById } from "@/lib/appwrite";
 import LoadingScreen from "@/components/LoadingScreen";
+import PageWrapper from "@/components/PageWrapper";
+import PostTypeTag from "@/components/PostTypeTag";
+import DatePill from "@/components/DatePill";
+import Tag from "@/components/Tag";
+import HTMLRenderer from "@/components/HTMLRenderer";
+import Step from "@/components/Step";
+import ResourceLink from "@/components/ResourceLink";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const Details = () => {
+  const { user } = useGlobalContext();
   const [loading, setLoading] = useState<boolean>(true);
   const [post, setPost] = useState<PostType | null>(null);
   const { project } = useLocalSearchParams();
 
   useEffect(() => {
-    if (project === null || project === undefined) return;
     const fetchPost = async () => {
       try {
         const postData = await getPostById(project as string);
@@ -30,16 +37,54 @@ const Details = () => {
     fetchPost();
   }, []);
 
-  console.log("POST DATA:", post);
-
   if (loading) {
     return <LoadingScreen />;
   }
 
+  if (!post) return null;
+
+  const {
+    id,
+    creatorId,
+    createdAt,
+    content,
+    description,
+    steps,
+    tags,
+    title,
+    type,
+    resources,
+  } = post;
+
+  const isCreator = user?.id === creatorId;
+
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <Text>Search Screen {post?.content}</Text>
-    </SafeAreaView>
+    <PageWrapper>
+      <Text className="font-ibold text-white-100 text-2xl mb-2">{title}</Text>
+      <PostTypeTag type={type} />
+      <Text className="text-white-300 text-sm font-iregular mt-4">
+        {description}
+      </Text>
+      <DatePill date={createdAt} containerStyles="mt-6" />
+      <View className="mt-4 flex-row flex-wrap">
+        {tags?.map((tag: string) => <Tag key={tag} tag={tag} />)}
+      </View>
+      {type !== "component" && (
+        <View className="mt-14 flex-col">
+          <Text className="text-lg font-ibold text-white-100">
+            {type === "knowledge" ? "Key Takeaways" : "Task Checklist"}
+          </Text>
+          {steps?.map((step: string) => <Step key={step} step={step} />)}
+        </View>
+      )}
+      <HTMLRenderer containerStyles="mt-10" content={content} />
+      <Text className="font-ibold text-white-100 text-lg mb-2">
+        Resources & Links
+      </Text>
+      {resources.map((resource: ResourceType) => (
+        <ResourceLink key={resource.link} resource={resource} />
+      ))}
+    </PageWrapper>
   );
 };
 

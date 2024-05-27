@@ -275,6 +275,7 @@ export const updateUser = async ({
 const leanPostData = (post: any) => {
   return {
     id: post.$id,
+    creatorId: post.creator.$id,
     createdAt: post.$createdAt,
     content: post.content,
     description: post.description,

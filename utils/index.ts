@@ -5,3 +5,13 @@ export const applyCodeStyles = (html: string) => {
     `<div style="${style}"><code type="$1">$2</code></div>`
   );
 };
+
+export function formatDate(dateString: number): string {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
+}

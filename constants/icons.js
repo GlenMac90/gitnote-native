@@ -17,6 +17,8 @@ import closeDark from "../assets/icons/close-dark.png";
 import knowledgeIcon from "../assets/icons/knowledge-icon.png";
 import calendar from "../assets/icons/calendar.png";
 import chevron from "../assets/icons/chevron.png";
+import stepIcon from "../assets/icons/step-icon.png";
+import link from "../assets/icons/link.png";
 
 export default {
   logo,
@@ -38,4 +40,6 @@ export default {
   knowledgeIcon,
   calendar,
   chevron,
+  stepIcon,
+  link,
 };

@@ -3,9 +3,15 @@ import { View } from "react-native";
 
 import { applyCodeStyles } from "@/utils";
 
-const HTMLRenderer = ({ content }: { content: string }) => {
+const HTMLRenderer = ({
+  content,
+  containerStyles,
+}: {
+  content: string;
+  containerStyles?: string;
+}) => {
   return (
-    <View className="w-full mt-6">
+    <View className={`${containerStyles} w-full`}>
       <RenderHtml
         contentWidth={100}
         source={{
