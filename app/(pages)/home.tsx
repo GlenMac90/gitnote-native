@@ -1,14 +1,15 @@
-import { Text, View } from "react-native";
+import { Text, View, Pressable } from "react-native";
 
 import { getRecentPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { createTypesData } from "@/constants";
-import { PostTypeType } from "@/types";
+import { postType } from "@/types";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageWrapper from "@/components/PageWrapper";
 import PostCard from "@/components/PostCard";
 import PostTypeTag from "@/components/PostTypeTag";
+import { seedData, deletePosts, deleteResources } from "@/lib/appwrite";
 
 export default function HomeScreen() {
   const { user } = useGlobalContext();
@@ -18,8 +19,17 @@ export default function HomeScreen() {
 
   if (loading) return <LoadingScreen />;
 
+  const handleSeedData = async () => {
+    await seedData();
+  };
+
   return (
     <PageWrapper>
+      <Pressable onPress={handleSeedData}>
+        <Text className="text-2xl text-white-100 font-ibold mt-7">
+          Seed Data
+        </Text>
+      </Pressable>
       <Text className="text-3xl text-white-100 font-ibold">
         Hello {firstName},
       </Text>
@@ -33,7 +43,7 @@ export default function HomeScreen() {
         {createTypesData.map((type) => (
           <PostTypeTag
             key={type.title}
-            type={type.title.toLowerCase() as PostTypeType}
+            type={type.title.toLowerCase() as postType}
           />
         ))}
       </View>

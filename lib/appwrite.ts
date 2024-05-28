@@ -13,6 +13,7 @@ import {
   Query,
   Storage,
 } from "react-native-appwrite";
+import { faker } from "@faker-js/faker";
 
 const client = new Client();
 const account = new Account(client);
@@ -364,5 +365,129 @@ export const getPostById = async (postId: string): Promise<PostType> => {
   } catch (error) {
     console.error(error);
     throw new Error();
+  }
+};
+
+export const seedData = async () => {
+  try {
+    const userPromises = Array.from({ length: 5 }).map(async () => {
+      const goalsArray = Array.from({ length: 3 }).map(() => {
+        return faker.lorem.sentence();
+      });
+      const knowledgeArray = Array.from({ length: 3 }).map(() => {
+        return faker.lorem.sentence();
+      });
+      const tagsArray = Array.from({ length: 3 }).map(() => {
+        return faker.word.noun();
+      });
+      const isAvailable = faker.datatype.boolean();
+      const startDate = isAvailable ? faker.date.future() : null;
+      const endDate = isAvailable ? faker.date.future() : null;
+      const data = {
+        email: faker.internet.email(),
+        avatar: faker.image.avatar(),
+        accountId: ID.unique(),
+        name: faker.person.fullName(),
+        goals: goalsArray,
+        knowledge: knowledgeArray,
+        availability: isAvailable,
+        startDate,
+        endDate,
+        onboarded: true,
+        onboardedLevel: 4,
+        portfolio: faker.internet.url(),
+        tags: tagsArray,
+      };
+      const newUser = await databases.createDocument(
+        databaseId,
+        userCollectionId,
+        ID.unique(),
+        data
+      );
+      return newUser;
+    });
+    const users = await Promise.all(userPromises);
+    console.log("USERS:", users);
+
+    const postPromises = users.map((user) => {
+      return Promise.all(
+        Array.from({ length: 4 }).map(async () => {
+          const randomIndex = Math.floor(Math.random() * 3);
+          const typeArray = ["workflow", "knowledge", "component"];
+          const tagsArray = Array.from({ length: 3 }).map(() =>
+            faker.word.noun()
+          );
+          const stepsArray = Array.from({ length: 3 }).map(() =>
+            faker.lorem.sentence()
+          );
+          const data = {
+            title: faker.lorem.sentence(),
+            type: typeArray[randomIndex],
+            tags: tagsArray,
+            description: faker.lorem.paragraph(),
+            content: faker.lorem.paragraph(),
+            creator: user.$id,
+            steps: stepsArray,
+          };
+          const newPost = await databases.createDocument(
+            databaseId,
+            postCollectionId,
+            ID.unique(),
+            data
+          );
+          return newPost;
+        })
+      );
+    });
+
+    const posts = (await Promise.all(postPromises)).flat();
+    console.log("POSTS:", posts);
+
+    const resourcePromises = posts.map((post) => {
+      Array.from({ length: 3 }).map(async () => {
+        const data = {
+          label: faker.lorem.sentence(),
+          link: faker.internet.url(),
+          posts: post.$id,
+        };
+        const newResource = await databases.createDocument(
+          databaseId,
+          resourceCollectionId,
+          ID.unique(),
+          data
+        );
+        return newResource;
+      });
+    });
+
+    const resources = await Promise.all(resourcePromises);
+    console.log("RESOURCES:", resources);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deletePosts = async () => {
+  try {
+    const posts = await databases.listDocuments(databaseId, postCollectionId);
+    posts.documents.map((post) =>
+      databases.deleteDocument(databaseId, postCollectionId, post.$id)
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteResources = async () => {
+  try {
+    const resources = await databases.listDocuments(
+      databaseId,
+      resourceCollectionId
+    );
+    resources.documents.map((resource) =>
+      databases.deleteDocument(databaseId, resourceCollectionId, resource.$id)
+    );
+  } catch (error) {
+    console.error(error);
   }
 };
