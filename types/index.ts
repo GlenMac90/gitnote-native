@@ -1,3 +1,4 @@
+import { GetPostsType } from "@/lib/appwrite";
 import { ImageSourcePropType } from "react-native";
 
 export type postType = "workflow" | "knowledge" | "component";
@@ -155,3 +156,12 @@ export interface RichTextEditorProps {
   content: string;
   setForm: React.Dispatch<React.SetStateAction<CreateFormType>>;
 }
+
+export interface useAppwriteProps {
+  fn: AppwriteFunction;
+  userId?: string;
+}
+
+type AppwriteFunction =
+  | ((skip: number) => Promise<GetPostsType>)
+  | ((userId: string, skip: number) => Promise<GetPostsType>);

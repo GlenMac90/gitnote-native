@@ -309,42 +309,69 @@ const getResourcesForPost = async (postId: string) => {
   }
 };
 
-export const getUsersPosts = async (userId: string): Promise<PostType[]> => {
-  if (!userId) return [];
+export type GetPostsType = {
+  posts: PostType[];
+  moreDocuments: boolean;
+};
+
+export const getUsersPosts = async (
+  userId: string,
+  skip: number
+): Promise<GetPostsType> => {
+  if (!userId) return { posts: [], moreDocuments: false };
   try {
     const posts = await databases.listDocuments(databaseId, postCollectionId, [
       Query.equal("creator", userId),
     ]);
 
+    const totalDocuments = posts.documents.length;
+
+    const selectedPosts = posts.documents.slice(skip, 5);
+
+    const isMoreDocuments = totalDocuments > skip;
+
     const postsWithResources = await Promise.all(
-      posts.documents.map(async (post) => {
+      selectedPosts.map(async (post) => {
         const resources = await getResourcesForPost(post.$id);
 
         return leanPostData({ ...post, resources });
       })
     );
-    return postsWithResources;
+
+    return {
+      posts: postsWithResources,
+      moreDocuments: isMoreDocuments,
+    };
   } catch (error) {
     console.error(error);
     throw new Error();
   }
 };
 
-export const getRecentPosts = async (): Promise<PostType[]> => {
+export const getRecentPosts = async (skip: number): Promise<GetPostsType> => {
   try {
     const posts = await databases.listDocuments(databaseId, postCollectionId, [
       Query.orderDesc("$createdAt"),
-      Query.limit(5),
     ]);
 
+    const totalDocuments = posts.documents.length;
+
+    const selectedPosts = posts.documents.slice(skip, skip + 5);
+
+    const isMoreDocuments = totalDocuments > skip;
+
     const postsWithResources = await Promise.all(
-      posts.documents.map(async (post) => {
+      selectedPosts.map(async (post) => {
         const resources = await getResourcesForPost(post.$id);
 
         return leanPostData({ ...post, resources });
       })
     );
-    return postsWithResources;
+
+    return {
+      posts: postsWithResources,
+      moreDocuments: isMoreDocuments,
+    };
   } catch (error) {
     console.error(error);
     throw new Error();
@@ -407,7 +434,6 @@ export const seedData = async () => {
       return newUser;
     });
     const users = await Promise.all(userPromises);
-    console.log("USERS:", users);
 
     const postPromises = users.map((user) => {
       return Promise.all(
@@ -441,7 +467,6 @@ export const seedData = async () => {
     });
 
     const posts = (await Promise.all(postPromises)).flat();
-    console.log("POSTS:", posts);
 
     const resourcePromises = posts.map((post) => {
       Array.from({ length: 3 }).map(async () => {
@@ -461,7 +486,6 @@ export const seedData = async () => {
     });
 
     const resources = await Promise.all(resourcePromises);
-    console.log("RESOURCES:", resources);
   } catch (error) {
     console.error(error);
   }

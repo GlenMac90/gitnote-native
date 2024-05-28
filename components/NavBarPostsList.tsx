@@ -9,12 +9,11 @@ const NavBarPostsList = ({
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const { posts } = useGlobalContext();
-  console.log("POSTS", posts[0]);
   return (
     <View className="w-full flex-col">
       <Text className="text-white-500 text-[10px]">POSTS</Text>
       <FlatList
-        data={posts}
+        data={posts.slice(0, 3)}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <NavPost link={item} setIsOpen={setIsOpen} />}
       />

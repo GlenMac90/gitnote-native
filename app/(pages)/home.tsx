@@ -1,4 +1,4 @@
-import { Text, View, Pressable } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 
 import { getRecentPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
@@ -9,27 +9,24 @@ import LoadingScreen from "@/components/LoadingScreen";
 import PageWrapper from "@/components/PageWrapper";
 import PostCard from "@/components/PostCard";
 import PostTypeTag from "@/components/PostTypeTag";
-import { seedData, deletePosts, deleteResources } from "@/lib/appwrite";
 
 export default function HomeScreen() {
   const { user } = useGlobalContext();
-  const { data: posts, loading } = useAppwrite({ fn: getRecentPosts });
+  const {
+    data: posts,
+    loading,
+    refetch,
+    isMore,
+    skip,
+    setSkip,
+  } = useAppwrite({ fn: getRecentPosts });
 
   const firstName = user?.name.split(" ")[0];
 
   if (loading) return <LoadingScreen />;
 
-  const handleSeedData = async () => {
-    await seedData();
-  };
-
   return (
     <PageWrapper>
-      <Pressable onPress={handleSeedData}>
-        <Text className="text-2xl text-white-100 font-ibold mt-7">
-          Seed Data
-        </Text>
-      </Pressable>
       <Text className="text-3xl text-white-100 font-ibold">
         Hello {firstName},
       </Text>
@@ -55,6 +52,31 @@ export default function HomeScreen() {
           ))}
         </View>
       )}
+      <View className="w-full flex-row items-center justify-center space-x-3 mt-6">
+        {skip > 5 && (
+          <TouchableOpacity
+            className="px-3.5 py-2.5 rounded-[5px] bg-black-700"
+            activeOpacity={0.8}
+            onPress={() => {
+              setSkip((prev) => prev - 10);
+              refetch();
+            }}
+          >
+            <Text className="text-xs text-white-100 font-imedium">Prev</Text>
+          </TouchableOpacity>
+        )}
+        {isMore && (
+          <TouchableOpacity
+            className="px-3.5 py-2.5 rounded-[5px] bg-black-700"
+            activeOpacity={0.8}
+            onPress={() => {
+              refetch();
+            }}
+          >
+            <Text className="text-xs text-white-100 font-imedium">Next</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </PageWrapper>
   );
 }
