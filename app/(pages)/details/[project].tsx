@@ -65,12 +65,12 @@ const Details = () => {
 
   return (
     <PageWrapper>
-      <Text className="font-ibold text-white-100 text-2xl mb-2">{title}</Text>
-      <View className="flex-row w-full justify-between items-center">
+      <Text className="font-ibold text-white-100 text-2xl">{title}</Text>
+      <View className="flex-row w-full justify-between mt-3 items-center">
         <PostTypeTag type={type} />
         {isCreator && <EditPostButton postId={id} />}
       </View>
-      <Text className="text-white-300 text-sm font-iregular mt-4">
+      <Text className="text-white-300 text-sm font-iregular mt-3">
         {description}
       </Text>
       <DatePill date={createdAt} containerStyles="mt-6" />
@@ -78,7 +78,7 @@ const Details = () => {
         {tags?.map((tag: string) => <Tag key={tag} tag={tag} />)}
       </View>
       {type !== "component" && (
-        <View className="mt-14 flex-col">
+        <View className="mt-10 flex-col">
           <Text className="text-lg font-ibold text-white-100">
             {type === "knowledge" ? "Key Takeaways" : "Task Checklist"}
           </Text>

@@ -6,6 +6,7 @@ import PageWrapper from "@/components/PageWrapper";
 import { getPostById } from "@/lib/appwrite";
 import { PostType } from "@/types";
 import PostForm from "@/components/PostForm";
+import LoadingGraphic from "@/components/LoadingGraphic";
 
 const Edit = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,7 +30,7 @@ const Edit = () => {
   if (loading) {
     return (
       <PageWrapper>
-        <Text>Loading...</Text>
+        <LoadingGraphic />
       </PageWrapper>
     );
   }

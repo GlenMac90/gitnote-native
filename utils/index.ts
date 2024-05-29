@@ -15,3 +15,7 @@ export function formatDate(dateString: number): string {
   };
   return date.toLocaleDateString("en-US", options);
 }
+
+export function truncateText(text: string, length: number): string {
+  return text.length > length ? `${text.slice(0, length)}...` : text;
+}
