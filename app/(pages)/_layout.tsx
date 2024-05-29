@@ -13,6 +13,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="profile/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="edit/[project]" options={{ headerShown: false }} />
       </Stack>
     </>
   );

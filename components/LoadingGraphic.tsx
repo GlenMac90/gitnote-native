@@ -1,24 +1,33 @@
 import * as Animatable from "react-native-animatable";
 import { View } from "react-native";
 
-const spin = {
-  0: {
-    transform: [{ rotate: "0deg" }],
-  },
-  1: {
-    transform: [{ rotate: "360deg" }],
-  },
-};
 const LoadingGraphic = () => {
   return (
     <View className="w-full items-center justify-center h-60">
-      <Animatable.View
-        duration={800}
-        easing={"linear"}
-        iterationCount={"infinite"}
-        animation={spin}
-        className="rounded-full w-24 h-24 border-t-4 border-l-4 border-b-4 animate-spin border-white-300"
-      />
+      <View className="flex-row space-x-3">
+        {Array.from({ length: 5 }).map((_, i) => {
+          return (
+            <Animatable.View
+              key={i}
+              iterationCount={"infinite"}
+              className="rounded-full w-2 h-2 bg-white-300"
+              duration={1000}
+              delay={i * 100}
+              animation={{
+                0: {
+                  transform: [{ translateY: 0 }, { scale: 1 }],
+                },
+                0.5: {
+                  transform: [{ translateY: -10 }, { scale: 1.1 }],
+                },
+                1: {
+                  transform: [{ translateY: 0 }, { scale: 1 }],
+                },
+              }}
+            />
+          );
+        })}
+      </View>
     </View>
   );
 };

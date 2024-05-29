@@ -122,6 +122,62 @@ export const createPost = async ({
   }
 };
 
+export const updatePost = async ({
+  postId,
+  form,
+  resourcesHaveChanged,
+}: {
+  postId: string;
+  form: CreateFormType;
+  resourcesHaveChanged: boolean;
+}) => {
+  try {
+    const { resources, ...rest } = form;
+    const updatedPost = await databases.updateDocument(
+      databaseId,
+      postCollectionId,
+      postId,
+      rest
+    );
+
+    if (!resourcesHaveChanged) {
+      return { updatedPost };
+    }
+
+    const resourcesToDelete = await databases.listDocuments(
+      databaseId,
+      resourceCollectionId,
+      [Query.equal("posts", postId)]
+    );
+
+    const resourceDeletions = resourcesToDelete.documents.map((resource) =>
+      databases.deleteDocument(databaseId, resourceCollectionId, resource.$id)
+    );
+
+    await Promise.all(resourceDeletions);
+
+    const updatedResources = await Promise.all(
+      resources.map(async (resource) => {
+        const newResource = await databases.createDocument(
+          databaseId,
+          resourceCollectionId,
+          ID.unique(),
+          {
+            ...resource,
+            posts: postId,
+          }
+        );
+
+        return newResource;
+      })
+    );
+
+    return { updatedPost, updatedResources };
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const signIn = async ({
   email,
   password,
@@ -489,6 +545,19 @@ export const seedData = async () => {
     });
 
     const resources = await Promise.all(resourcePromises);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deletePost = async (postId: string) => {
+  try {
+    const post = await databases.deleteDocument(
+      databaseId,
+      postCollectionId,
+      postId
+    );
+    return post;
   } catch (error) {
     console.error(error);
   }

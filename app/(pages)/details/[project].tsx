@@ -4,7 +4,6 @@ import { useLocalSearchParams, router } from "expo-router";
 
 import { PostType, ResourceType } from "@/types";
 import { getPostById } from "@/lib/appwrite";
-import LoadingScreen from "@/components/LoadingScreen";
 import PageWrapper from "@/components/PageWrapper";
 import PostTypeTag from "@/components/PostTypeTag";
 import DatePill from "@/components/DatePill";
@@ -13,6 +12,8 @@ import HTMLRenderer from "@/components/HTMLRenderer";
 import Step from "@/components/Step";
 import ResourceLink from "@/components/ResourceLink";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import LoadingGraphic from "@/components/LoadingGraphic";
+import EditPostButton from "@/components/EditPostButton";
 
 const Details = () => {
   const { user } = useGlobalContext();
@@ -38,7 +39,11 @@ const Details = () => {
   }, []);
 
   if (loading) {
-    return <LoadingScreen />;
+    return (
+      <PageWrapper>
+        <LoadingGraphic />
+      </PageWrapper>
+    );
   }
 
   if (!post) return null;
@@ -61,7 +66,10 @@ const Details = () => {
   return (
     <PageWrapper>
       <Text className="font-ibold text-white-100 text-2xl mb-2">{title}</Text>
-      <PostTypeTag type={type} />
+      <View className="flex-row w-full justify-between items-center">
+        <PostTypeTag type={type} />
+        {isCreator && <EditPostButton postId={id} />}
+      </View>
       <Text className="text-white-300 text-sm font-iregular mt-4">
         {description}
       </Text>

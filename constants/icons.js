@@ -20,6 +20,7 @@ import chevron from "../assets/icons/chevron.png";
 import stepIcon from "../assets/icons/step-icon.png";
 import link from "../assets/icons/link.png";
 import spinner from "../assets/icons/spinner.png";
+import dotsVertical from "../assets/icons/dots-vertical.png";
 
 export default {
   logo,
@@ -44,4 +45,5 @@ export default {
   stepIcon,
   link,
   spinner,
+  dotsVertical,
 };

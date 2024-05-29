@@ -3,9 +3,9 @@ import { useLocalSearchParams } from "expo-router";
 
 import { getUsersPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
-import LoadingScreen from "@/components/LoadingScreen";
 import PageWrapper from "@/components/PageWrapper";
 import PostCard from "@/components/PostCard";
+import LoadingGraphic from "@/components/LoadingGraphic";
 
 const User = () => {
   const { id } = useLocalSearchParams();
@@ -15,11 +15,11 @@ const User = () => {
     userId: id as string,
   });
 
-  if (loading) return <LoadingScreen />;
-
   return (
     <PageWrapper>
-      {posts.length > 0 ? (
+      {loading ? (
+        <LoadingGraphic />
+      ) : posts.length > 0 ? (
         <View className="flex-col w-full">
           {posts.map((post) => (
             <PostCard key={post.id} post={post} />
