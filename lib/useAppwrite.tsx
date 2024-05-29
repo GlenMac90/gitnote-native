@@ -9,6 +9,7 @@ const useAppwrite = ({ fn, userId }: useAppwriteProps) => {
   const [data, setData] = useState<PostType[]>([]);
   const [loading, setLoading] = useState(false);
   const [isMore, setIsMore] = useState(true);
+  const [totalDocuments, setTotalDocuments] = useState(0);
 
   const fetchData = async () => {
     setLoading(true);
@@ -25,6 +26,32 @@ const useAppwrite = ({ fn, userId }: useAppwriteProps) => {
       setSkip((prev) => prev + 5);
       setData(response.posts);
       setIsMore(response.moreDocuments);
+      setTotalDocuments(response.totalDocuments);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchPrevious = async () => {
+    setLoading(true);
+    try {
+      let response;
+      if (userId) {
+        response = await (
+          fn as (userId: string, skip: number) => Promise<GetPostsType>
+        )(userId, skip - 10);
+      } else {
+        response = await (fn as (skip: number) => Promise<GetPostsType>)(
+          skip - 10
+        );
+        setPosts(response.posts);
+      }
+      setSkip((prev) => prev - 5);
+      setData(response.posts);
+      setIsMore(response.moreDocuments);
+      setTotalDocuments(response.totalDocuments);
     } catch (error) {
       console.error(error);
     } finally {
@@ -37,7 +64,16 @@ const useAppwrite = ({ fn, userId }: useAppwriteProps) => {
   }, []);
 
   const refetch = () => fetchData();
-  return { data, loading, refetch, isMore, setSkip, skip };
+  return {
+    data,
+    loading,
+    refetch,
+    isMore,
+    setSkip,
+    skip,
+    totalDocuments,
+    fetchPrevious,
+  };
 };
 
 export default useAppwrite;

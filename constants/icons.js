@@ -19,6 +19,7 @@ import calendar from "../assets/icons/calendar.png";
 import chevron from "../assets/icons/chevron.png";
 import stepIcon from "../assets/icons/step-icon.png";
 import link from "../assets/icons/link.png";
+import spinner from "../assets/icons/spinner.png";
 
 export default {
   logo,
@@ -42,4 +43,5 @@ export default {
   chevron,
   stepIcon,
   link,
+  spinner,
 };

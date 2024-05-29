@@ -3,7 +3,19 @@ import { ImageSourcePropType } from "react-native";
 
 export type postType = "workflow" | "knowledge" | "component";
 
+export type QuickLinkType = {
+  id: number;
+  title: string;
+  image: ImageSourcePropType;
+  path?: string;
+};
+
 export interface NavLinkProps {
+  link: QuickLinkType;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+export interface NavPostProps {
   link: PostType;
   setIsOpen: (isOpen: boolean) => void;
 }

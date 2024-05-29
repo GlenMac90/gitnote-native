@@ -1,10 +1,10 @@
 import { Image, Text, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 
-import { NavLinkProps } from "@/types";
+import { NavPostProps } from "@/types";
 import icons from "@/constants/icons";
 
-const NavPost = ({ setIsOpen, link }: NavLinkProps) => {
+const NavPost = ({ setIsOpen, link }: NavPostProps) => {
   const getIcon = () => {
     switch (link.type) {
       case "workflow":
@@ -25,11 +25,15 @@ const NavPost = ({ setIsOpen, link }: NavLinkProps) => {
 
   return (
     <TouchableOpacity
-      className="flex-row space-x-3 mt-5 items-center"
+      className="flex-row space-x-3 mt-5"
       activeOpacity={0.8}
       onPress={handlePress}
     >
-      <Image source={getIcon()} resizeMode="contain" className="w-4 h-4" />
+      <Image
+        source={getIcon()}
+        resizeMode="contain"
+        className="w-4 h-4 mt-0.5"
+      />
       <Text className="text-sm text-white-300 font-imedium">{link.title}</Text>
     </TouchableOpacity>
   );

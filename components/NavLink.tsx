@@ -1,5 +1,5 @@
 import { Image, Text, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
+import { router, Link } from "expo-router";
 import { NavLinkProps } from "@/types";
 import { signOut } from "@/lib/appwrite";
 
@@ -9,8 +9,26 @@ const NavLink = ({ link, setIsOpen }: NavLinkProps) => {
       setIsOpen(false);
       await signOut();
       router.replace("sign-in");
+    } else if (link.path) {
+      router.push(link.path);
     }
   };
+
+  if (link.path) {
+    return (
+      <Link href={link.path} className="mt-5">
+        <TouchableOpacity
+          className="flex-row space-x-3 items-center"
+          activeOpacity={0.8}
+        >
+          <Image source={link.image} resizeMode="contain" className="w-4 h-4" />
+          <Text className="text-sm text-white-300 font-imedium">
+            {link.title}
+          </Text>
+        </TouchableOpacity>
+      </Link>
+    );
+  }
 
   return (
     <TouchableOpacity

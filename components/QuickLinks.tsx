@@ -19,7 +19,6 @@ const linkData = [
   {
     id: 3,
     title: "Logout",
-    path: "https://twitter.com/gitnoteapp",
     image: icons.logout,
   },
 ];

@@ -78,7 +78,7 @@ const Details = () => {
         </View>
       )}
       <HTMLRenderer containerStyles="mt-10" content={content} />
-      <Text className="font-ibold text-white-100 text-lg mb-2">
+      <Text className="font-ibold text-white-100 text-lg mb-2 mt-6">
         Resources & Links
       </Text>
       {resources.map((resource: ResourceType) => (

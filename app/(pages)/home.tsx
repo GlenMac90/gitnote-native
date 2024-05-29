@@ -5,10 +5,10 @@ import useAppwrite from "@/lib/useAppwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { createTypesData } from "@/constants";
 import { postType } from "@/types";
-import LoadingScreen from "@/components/LoadingScreen";
 import PageWrapper from "@/components/PageWrapper";
 import PostCard from "@/components/PostCard";
 import PostTypeTag from "@/components/PostTypeTag";
+import LoadingGraphic from "@/components/LoadingGraphic";
 
 export default function HomeScreen() {
   const { user } = useGlobalContext();
@@ -18,12 +18,14 @@ export default function HomeScreen() {
     refetch,
     isMore,
     skip,
-    setSkip,
+    totalDocuments,
+    fetchPrevious,
   } = useAppwrite({ fn: getRecentPosts });
 
   const firstName = user?.name.split(" ")[0];
 
-  if (loading) return <LoadingScreen />;
+  const pageNumber = skip / 5;
+  const numberOfPages = Math.round(totalDocuments / 5 + 1);
 
   return (
     <PageWrapper>
@@ -45,38 +47,47 @@ export default function HomeScreen() {
         ))}
       </View>
 
-      {posts.length > 0 && (
-        <View className="flex-col w-full">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+      {loading ? (
+        <LoadingGraphic />
+      ) : (
+        posts.length > 0 && (
+          <View className="flex-col w-full">
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </View>
+        )
+      )}
+
+      {!loading && (
+        <View className="w-full flex-row items-center justify-center space-x-3 mt-6">
+          {skip > 5 && (
+            <TouchableOpacity
+              className="px-3.5 py-2.5 rounded-[5px] bg-black-700"
+              activeOpacity={0.8}
+              onPress={() => {
+                fetchPrevious();
+              }}
+            >
+              <Text className="text-xs text-white-100 font-imedium">Prev</Text>
+            </TouchableOpacity>
+          )}
+          <Text className="text-sx text-white-300 font-imedium">
+            {pageNumber}/{numberOfPages}
+          </Text>
+          {isMore && (
+            <TouchableOpacity
+              className="px-3.5 py-2.5 rounded-[5px] bg-black-700"
+              activeOpacity={0.8}
+              onPress={() => {
+                refetch();
+              }}
+            >
+              <Text className="text-xs text-white-100 font-imedium">Next</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
-      <View className="w-full flex-row items-center justify-center space-x-3 mt-6">
-        {skip > 5 && (
-          <TouchableOpacity
-            className="px-3.5 py-2.5 rounded-[5px] bg-black-700"
-            activeOpacity={0.8}
-            onPress={() => {
-              setSkip((prev) => prev - 10);
-              refetch();
-            }}
-          >
-            <Text className="text-xs text-white-100 font-imedium">Prev</Text>
-          </TouchableOpacity>
-        )}
-        {isMore && (
-          <TouchableOpacity
-            className="px-3.5 py-2.5 rounded-[5px] bg-black-700"
-            activeOpacity={0.8}
-            onPress={() => {
-              refetch();
-            }}
-          >
-            <Text className="text-xs text-white-100 font-imedium">Next</Text>
-          </TouchableOpacity>
-        )}
-      </View>
     </PageWrapper>
   );
 }

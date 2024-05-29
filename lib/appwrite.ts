@@ -312,13 +312,14 @@ const getResourcesForPost = async (postId: string) => {
 export type GetPostsType = {
   posts: PostType[];
   moreDocuments: boolean;
+  totalDocuments: number;
 };
 
 export const getUsersPosts = async (
   userId: string,
   skip: number
 ): Promise<GetPostsType> => {
-  if (!userId) return { posts: [], moreDocuments: false };
+  if (!userId) return { posts: [], moreDocuments: false, totalDocuments: 0 };
   try {
     const posts = await databases.listDocuments(databaseId, postCollectionId, [
       Query.equal("creator", userId),
@@ -341,6 +342,7 @@ export const getUsersPosts = async (
     return {
       posts: postsWithResources,
       moreDocuments: isMoreDocuments,
+      totalDocuments,
     };
   } catch (error) {
     console.error(error);
@@ -371,6 +373,7 @@ export const getRecentPosts = async (skip: number): Promise<GetPostsType> => {
     return {
       posts: postsWithResources,
       moreDocuments: isMoreDocuments,
+      totalDocuments,
     };
   } catch (error) {
     console.error(error);
